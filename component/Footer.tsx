@@ -5,6 +5,7 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import HomeIcon from "@mui/icons-material/Home";
+import styles from "./Footer.module.css";
 
 export const LabelBottomNavigation = () => {
   const [value, setValue] = React.useState("");
@@ -14,19 +15,28 @@ export const LabelBottomNavigation = () => {
   };
 
   return (
-    <BottomNavigation sx={{ width: 500 }} value={value} onChange={handleChange}>
+    <BottomNavigation
+      className={styles.footer}
+      sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+      value={value}
+      onChange={handleChange}
+    >
       <BottomNavigationAction
+        className={styles.Home}
         label="Home"
         value="backHome"
         icon={<HomeIcon />}
+        href="/home"
       />
       <BottomNavigationAction
+        className={styles.AddPosts}
         label="歌詞を投稿する"
         value="post"
         icon={<AddCircleIcon />}
         href="/post"
       />
       <BottomNavigationAction
+        className={styles.Logout}
         label="ログアウト"
         value={Logout}
         icon={<LogoutIcon />}

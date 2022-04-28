@@ -3,6 +3,8 @@ import { db } from "../firebase";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { auth } from "../firebase";
+
 
 type PostsType = {
   Lyric: string;
@@ -40,11 +42,16 @@ const ObjectStateForm: React.FC = () => {
   console.log(formState);
 
   const postData = () => {
-    db.collection("post").add({
+    const uid = auth.currentUser.uid
+    const userRef = db.collection('user').doc(uid)
+    const postRef = userRef.collection('posts').doc()
+    postRef.set({
       Lyric: formState.Lyric,
       Artist: formState.Artist,
       Title: formState.Title,
-      URL: formState.URL,
+      youtubeURL: formState.URL,
+      author: uid,
+      likeCount: 0,
     });
     setFormState(initialFormState);
   };
