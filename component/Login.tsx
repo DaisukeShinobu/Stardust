@@ -16,6 +16,8 @@ import { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { useRouter } from "next/router";
 import { signInWithGoogle } from "../auth/GoogleAuthProvider";
+import { db } from "../firebase";
+import { signInWithTwitter } from "../auth/TwitterAuthProvider";
 
 function Copyright(props: any) {
   return (
@@ -154,6 +156,11 @@ const SignInSide = () => {
                             email,
                             password
                           );
+                          const uid = auth.currentUser.uid
+                          const userRef = db.collection('user').doc(uid)
+                          await userRef.set({
+                            likePostCount: 0
+                          })
                           router.push("/");
                         } catch (error) {
                           alert(error.message);
@@ -173,11 +180,20 @@ const SignInSide = () => {
                 </Grid>
               </Grid>
               <Button
-                onClick={signInWithGoogle}
+                onClick={signInWithTwitter}
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 4, mb: 2 }}
+              >
+                Twitterでログイン
+              </Button>
+              <Button
+                onClick={signInWithGoogle}
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 0, mb: 2 }}
               >
                 Googleでログイン
               </Button>

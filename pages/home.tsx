@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthProvider } from "../auth/AuthProvider";
 import { auth, db } from "../firebase";
 import { useRouter } from "next/router";
-import { BasicTabs } from "../component/Header";
 import { LabelBottomNavigation } from "../component/Footer";
 import Posts from "../component/Timeline/Posts";
+import ResponsiveAppBar from "../component/Header";
+
 
 const Home: React.FC = (props) => {
   const router = useRouter();
   const [lyrics, setLyrics] = useState([
-    { Lyric: "", Artist: "", Title: "", URL: "", id: "" },
+    { Lyric: "", Artist: "", Title: "", URL: "", id: "", Tags: [], Author: "" },
   ]);
 
   useEffect(() => {
@@ -20,18 +21,22 @@ const Home: React.FC = (props) => {
   });
 
   useEffect(() => {
-    const unSub = db.collection("post").onSnapshot((snapshot) => {
+    const unSub = db.collectionGroup("posts").onSnapshot((snapshot) => {
       setLyrics(
         snapshot.docs.map((doc) => ({
           Lyric: doc.data().Lyric,
           Artist: doc.data().Artist,
           Title: doc.data().Title,
-          URL: doc.data().URL,
+          URL: doc.data().youtubeURL,
+          Tags: doc.data().tags,
+          Author: doc.data().author,
           id: doc.id,
         }))
       );
+      console.log(lyrics)
     });
     return () => {
+      
       unSub();
     };
   }, []);
@@ -39,7 +44,7 @@ const Home: React.FC = (props) => {
   return (
     <AuthProvider>
       <div>
-        <BasicTabs></BasicTabs>
+        <ResponsiveAppBar />
         {lyrics.map((data) => (
           <Posts
             key={data.id}
@@ -47,10 +52,12 @@ const Home: React.FC = (props) => {
             Title={data.Title}
             Lyric={data.Lyric}
             Artist={data.Artist}
+            Tags={data.Tags}
+            Author={data.Author}
             URL={data.URL}
           />
         ))}
-        <LabelBottomNavigation></LabelBottomNavigation>
+        <LabelBottomNavigation />
       </div>
     </AuthProvider>
   );
