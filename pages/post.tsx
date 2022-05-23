@@ -1,5 +1,5 @@
 import React from "react";
-import ObjectStateForm from "../component/postLyric"
+import ObjectStateForm from "../component/post/postLyric"
 import { LabelBottomNavigation } from "../component/Footer";
 import Box from "@mui/material/Box";
 

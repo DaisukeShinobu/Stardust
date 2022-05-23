@@ -2,43 +2,46 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import React from "react";
 import { db } from "../firebase";
+import Posts from "../component/Timeline/Posts";
+import { AuthProvider } from "../auth/AuthProvider";
+import ResponsiveAppBar from "../component/Header";
+import { LabelBottomNavigation } from "../component/Footer";
+import ShareButton from "../component/share/sharebutton";
+
+type PostsType = {
+  Lyric: string;
+  Artist: string;
+  Title: string;
+  URL: string;
+  postid: string;
+  Tags: string[];
+  Author: string;
+};
 
 const FirestoreData = () => {
-  type dataType = {
-    Lyric: string;
-    Artist: string;
-    Title: string;
-    URL: string;
-    Tags: string[];
-    Author: string;
-    id: string;
-  };
-  const [data, setData] = useState<dataType>({
-    Lyric: "",
-    Artist: "",
-    Title: "",
-    URL: "",
-    id: "",
-    Tags: [],
-    Author: ""
-  });
   const router = useRouter();
-  const param = router.query;
+  const param = router.query; 
+  const [lyrics, setLyrics] = useState([
+    { Lyric: "", Artist: "", Title: "", URL: "", postid: "", Tags: [], Author: "" },
+  ]);
 
-  const fetch = async () => {
-    const firestoreData = await db.collectionGroup("posts").where("id", "==", `${param.id}`).get();
-    const res = firestoreData.docs;
-    console.log(res);
-    if (res) {
-      setData({
-        ...data,
-        Lyric: res.Lyric,
-        Artist: res.Artist,
-        Title: res.Title,
-        URL: res.youtubeURL,
-        Tags: res.Tags,
-        Author: res.Author
-      });
+  const fetch = () => {
+    if (param.id) {
+      const DetailData = db.collectionGroup("posts").where('postid', '==', param.id);
+       DetailData.get().then((data) => {
+          setLyrics(
+               data.docs.map((doc) => ({
+                 Lyric: doc.data().Lyric,
+                 Artist: doc.data().Artist,
+                 Title: doc.data().Title,
+                 URL: doc.data().youtubeURL,
+                 Tags: doc.data().tags,
+                 Author: doc.data().author,
+                 postid: doc.id,
+               }))
+             );
+             console.log(lyrics)
+        });
     }
   };
   useEffect(() => {
@@ -46,15 +49,24 @@ const FirestoreData = () => {
   }, [param.id]);
 
   return (
-    <p>
-      {param.id}
-      {data.Title}
-      {data.Artist}
-      {data.Lyric}
-      {data.URL}
-      {data.Tags}
-    </p>
-  );
-};
+    <AuthProvider>
+      <div>
+        <ResponsiveAppBar />
+        {lyrics && (lyrics.map((data) => (
+          <Posts
+            key={data.postid}
+            id={data.postid}
+            Title={data.Title}
+            Lyric={data.Lyric}
+            Artist={data.Artist}
+            Tags={data.Tags}
+            Author={data.Author}
+            URL={data.URL}
+          />
+        )))}
+        <LabelBottomNavigation />
+      </div>
+    </AuthProvider>
+  );};
 
 export default FirestoreData;
