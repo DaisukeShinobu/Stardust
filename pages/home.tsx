@@ -3,7 +3,6 @@ import { AuthProvider } from "../auth/AuthProvider";
 import { auth, db } from "../firebase";
 import { useRouter } from "next/router";
 import { LabelBottomNavigation } from "../component/Footer";
-import Posts from "../component/Timeline/Posts";
 import ResponsiveAppBar from "../component/Header";
 import Timeline from "../component/Timeline/timeline";
 
