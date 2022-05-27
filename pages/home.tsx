@@ -3,9 +3,8 @@ import { AuthProvider } from "../auth/AuthProvider";
 import { auth, db } from "../firebase";
 import { useRouter } from "next/router";
 import { LabelBottomNavigation } from "../component/Footer";
-import Posts from "../component/Timeline/Posts";
 import ResponsiveAppBar from "../component/Header";
-
+import Timeline from "../component/Timeline/timeline";
 
 const Home: React.FC = (props) => {
   const router = useRouter();
@@ -46,7 +45,7 @@ const Home: React.FC = (props) => {
       <div>
         <ResponsiveAppBar />
         {lyrics.map((data) => (
-          <Posts
+          <Timeline
             key={data.id}
             id={data.id}
             Title={data.Title}

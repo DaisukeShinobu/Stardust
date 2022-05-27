@@ -33,6 +33,13 @@
   color: #FFFFFF;
 }
 
+.detailbutton{
+  float: right;
+  border-radius:30px;
+  width:120px;
+  color: #322F45;
+}
+
 .Favo{
   color: #FFFFFF;
 }

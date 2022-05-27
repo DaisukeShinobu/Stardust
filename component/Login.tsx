@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -18,27 +16,61 @@ import { useRouter } from "next/router";
 import { signInWithGoogle } from "../auth/GoogleAuthProvider";
 import { db } from "../firebase";
 import { signInWithTwitter } from "../auth/TwitterAuthProvider";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import GoogleIcon from "@mui/icons-material/Google";
+import { colors } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      main: "#FFFFFF",
+      dark: "#271B33",
+      light: "",
+      // dark: will be calculated from palette.primary.main,
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+    secondary: {
+      light: "#0066ff",
+      main: "#0044ff",
+      // dark: will be calculated from palette.secondary.main,
+      contrastText: "#ffcc00",
+    },
+  },
+});
+
+const myStyle = {
+  "& .MuiInputBase-input": {
+    color: "#FFFFFF", // 入力文字の色
+  },
+  "& label": {
+    color: "#AAAAAA", // 通常時のラベル色
+  },
+  "& .MuiInput-underline:before": {
+    borderBottomColor: "#CCCCCC", // 通常時のボーダー色
+  },
+  "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+    borderBottomColor: "#DDDDDD", // ホバー時のボーダー色
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#CCCCCC", // 通常時のボーダー色(アウトライン)
+    },
+    "&:hover fieldset": {
+      borderColor: "#DDDDDD", // ホバー時のボーダー色(アウトライン)
+    },
+  },
+};
 
 function Copyright(props: any) {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
+    <Typography variant="body2" color="#FFFFFF" align="center" {...props}>
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Stardust
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link color="inherit">Stardust</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );
 }
-
-const theme = createTheme();
-
 const SignInSide = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
@@ -74,28 +106,53 @@ const SignInSide = () => {
           sx={{
             backgroundImage: "url(https://source.unsplash.com/random)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+            bgcolor: "primary.main",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sx={{ bgcolor: "primary.dark" }}
+          sm={8}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+        >
           <Box
             sx={{
-              my: 8,
+              my: 10,
               mx: 4,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Typography sx={{ color: "primary.main", fontSize: 20 }}>
+              <b>5</b>秒で読める　<b>300</b>以上の歌詞
+            </Typography>
+            <br />
+            <Typography sx={{ color: "primary.main", fontSize: 20 }}>
+              歌詞から曲を好きになる
+              <br />
+              音楽発見プラットフォーム
+              <br />
+            </Typography>
+            <br />
+            <Typography sx={{ color: "primary.main", fontSize: 25 }}>
+              <b>Stardust</b>
+            </Typography>
+            <br />
+            <Avatar sx={{ m: 1, bgcolor: "primary.dark" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography
+              sx={{ m: 1, color: "primary.main", fontSize: 20 }}
+              component="h1"
+              variant="h5"
+            >
               {isLogin ? "ログイン" : "アカウント登録"}
             </Typography>
             <Box
@@ -105,6 +162,7 @@ const SignInSide = () => {
               sx={{ mt: 1 }}
             >
               <TextField
+                sx={myStyle}
                 margin="normal"
                 required
                 fullWidth
@@ -119,6 +177,7 @@ const SignInSide = () => {
                 }}
               />
               <TextField
+                sx={myStyle}
                 margin="normal"
                 required
                 fullWidth
@@ -156,11 +215,11 @@ const SignInSide = () => {
                             email,
                             password
                           );
-                          const uid = auth.currentUser.uid
-                          const userRef = db.collection('user').doc(uid)
+                          const uid = auth.currentUser.uid;
+                          const userRef = db.collection("user").doc(uid);
                           await userRef.set({
-                            likePostCount: 0
-                          })
+                            likePostCount: 0,
+                          });
                           router.push("/");
                         } catch (error) {
                           alert(error.message);
@@ -186,7 +245,8 @@ const SignInSide = () => {
                 variant="contained"
                 sx={{ mt: 4, mb: 2 }}
               >
-                Twitterでログイン
+                <TwitterIcon />
+                　Twitterでログイン
               </Button>
               <Button
                 onClick={signInWithGoogle}
@@ -195,7 +255,7 @@ const SignInSide = () => {
                 variant="contained"
                 sx={{ mt: 0, mb: 2 }}
               >
-                Googleでログイン
+                <GoogleIcon />　 Googleでログイン
               </Button>
               <Copyright sx={{ mt: 5 }} />
             </Box>

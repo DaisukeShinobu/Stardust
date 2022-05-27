@@ -8,6 +8,11 @@
   height: 100vh;
 }
 
+.all {
+  background-color: #322F45;
+}
+
+
 .main {
   padding: 5rem 0;
   flex: 1;
