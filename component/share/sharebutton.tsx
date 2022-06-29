@@ -9,10 +9,16 @@ type shareButtonType = {
   title: string;
 };
 
+const hashtag = "歌詞から曲を好きになる";
+
 const ShareButton: React.FC<shareButtonType> = (props) => {
   return (
     <div>
-      <TwitterShareButton url={props.url} title={props.title}>
+      <TwitterShareButton
+        url={props.url}
+        title={props.title}
+        hashtags={[hashtag]}
+      >
         <TwitterIcon className={styles.Twitter} />
       </TwitterShareButton>
       <FacebookShareButton url={props.url} quote={props.title}>

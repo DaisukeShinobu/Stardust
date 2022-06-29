@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import React from "react";
 import { db } from "../firebase";
-import Posts from "../component/Timeline/Posts";
 import { AuthProvider } from "../auth/AuthProvider";
 import ResponsiveAppBar from "../component/Header";
 import { LabelBottomNavigation } from "../component/Footer";

@@ -81,7 +81,6 @@ declare module "@mui/material/Button" {
   }
 }
 
-
 const ObjectStateForm: React.FC = () => {
   const router = useRouter();
   const [formState, setFormState] = useState(initialFormState);
@@ -122,12 +121,9 @@ const ObjectStateForm: React.FC = () => {
     postRef.update({
       postid: postRef.id,
     });
+    
+    router.push("/");
   };
-
-  const backHome = () => {
-    setFormState(initialFormState);
-    router.push("/home");
-  }
 
   return (
     <Box
@@ -180,7 +176,6 @@ const ObjectStateForm: React.FC = () => {
           color="neutral"
           onClick={() => {
             postData();
-            backHome();
           }}
         >
           歌詞を投稿する

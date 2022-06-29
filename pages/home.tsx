@@ -3,6 +3,7 @@ import { AuthProvider } from "../auth/AuthProvider";
 import { auth, db } from "../firebase";
 import { useRouter } from "next/router";
 import { LabelBottomNavigation } from "../component/Footer";
+import {Footer2} from "../component/footer2";
 import ResponsiveAppBar from "../component/Header";
 import Timeline from "../component/Timeline/timeline";
 
@@ -14,9 +15,10 @@ const Home: React.FC = (props) => {
 
   useEffect(() => {
     const loginJudge = auth.onAuthStateChanged((user) => {
+      console.log(user);
       !user && router.push("/");
     });
-    return () => loginJudge();
+    loginJudge();
   });
 
   useEffect(() => {
@@ -32,10 +34,9 @@ const Home: React.FC = (props) => {
           id: doc.id,
         }))
       );
-      console.log(lyrics)
+      console.log(lyrics);
     });
     return () => {
-      
       unSub();
     };
   }, []);
@@ -56,7 +57,7 @@ const Home: React.FC = (props) => {
             URL={data.URL}
           />
         ))}
-        <LabelBottomNavigation />
+        <Footer2 />
       </div>
     </AuthProvider>
   );
