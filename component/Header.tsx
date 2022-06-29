@@ -11,7 +11,26 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import styles from "./Header.module.css";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      // light: will be calculated from palette.primary.main,
+      main: "#FFFFFF",
+      dark: "#271B33",
+      light: "",
+      // dark: will be calculated from palette.primary.main,
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+    secondary: {
+      light: "#0066ff",
+      main: "#0044ff",
+      // dark: will be calculated from palette.secondary.main,
+      contrastText: "#ffcc00",
+    },
+  },
+});
 
 const pages = ["新着", "人気", "タグ"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -40,19 +59,23 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar className={styles.header} position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-          >
-            Stardust
-          </Typography>
+    <ThemeProvider theme={theme}>
+      <AppBar
+        sx={{ bgcolor: "primary.dark", color: "primary.main" }}
+        position="fixed"
+      >
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            >
+              Stardust
+            </Typography>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            {/* <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -88,15 +111,15 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box> */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-          >
-            Stardust
-          </Typography>
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            >
+              Stardust
+            </Typography>
+            {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
@@ -108,7 +131,7 @@ const ResponsiveAppBar = () => {
             ))}
           </Box> */}
 
-          {/* <Box sx={{ flexGrow: 0 }}>
+            {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -137,9 +160,10 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box> */}
-        </Toolbar>
-      </Container>
-    </AppBar>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </ThemeProvider>
   );
 };
 export default ResponsiveAppBar;
